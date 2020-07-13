@@ -2,45 +2,26 @@
 
 public class ControllerManager : MonoBehaviour
 {
-    static float leftStickHorizontal, leftStickVertical;
-    static float rightStickHorizontal, rightStickVertical;
-    static float crossHorizontal, crossVertical;
+    static float leftStickHorizontal, leftStickVertical;    //左スティック入力
+    static float rightStickHorizontal, rightStickVertical;  //右スティック入力
 
-    float a;
-
-    static float normLeftStickHorizontal, normLeftStickVertical;
-    static float normRightStickHorizontal, normRightStickVertical;
+    static float leftAngle, rightAngle; //成す角度
 
     public void Update()
     {
         //左スティックの入力値を取得
         leftStickHorizontal = Input.GetAxis("LeftStickHorizontal");
         leftStickVertical = Input.GetAxis("LeftStickVertical");
-        //左スティックの入力値を正規化
-        a = Mathf.Sqrt((leftStickHorizontal * leftStickHorizontal) + (leftStickVertical * leftStickVertical));
-        if (a > 0)
-        {
-            a = 1.0f / a;
-        }
-        normLeftStickHorizontal = leftStickHorizontal * a;
-        normLeftStickVertical = leftStickVertical * a;
+        //Vertical成分Horizontal成分と原点の成す角度を求める
+        leftAngle=Mathf.Atan2(leftStickVertical, leftStickHorizontal);
+        leftAngle = leftAngle * Mathf.Rad2Deg;
 
         //右スティックの入力値を取得
         rightStickHorizontal = Input.GetAxis("RightStickHorizontal");
         rightStickVertical = Input.GetAxis("RightStickVertical");
-        //右スティックの入力値を正規化
-        a = Mathf.Sqrt((rightStickHorizontal * rightStickHorizontal) + (rightStickVertical * rightStickVertical));
-        if (a > 0)
-        {
-            a = 1.0f / a;
-        }
-        normRightStickHorizontal = rightStickHorizontal * a;
-        normRightStickVertical = rightStickVertical * a;
-
-        ////十字キーの入力値を取得
-        //crossHorizontal = Input.GetAxis("CrossHorizontal");
-        //crossVertical = Input.GetAxis("CrossHorizontal");
-        ////十字キーの入力値を正規化
+        //Vertical成分Horizontal成分と原点の成す角度を求める
+        rightAngle = Mathf.Atan2(rightStickVertical, rightStickHorizontal);
+        rightAngle = rightAngle * Mathf.Rad2Deg;
     }
 
     //左スティックを上に傾けている判定
@@ -48,9 +29,9 @@ public class ControllerManager : MonoBehaviour
     {
         bool check = false;
 
-        if (Mathf.Cos(67.5f) >= normLeftStickHorizontal && normLeftStickHorizontal > Mathf.Cos(112.5f))
+        if (67.5f <= leftAngle && leftAngle < 112.5f)
         {
-            if (normLeftStickVertical > 0)
+            if (leftStickHorizontal != 0 || leftStickVertical != 0)
             {
                 check = true;
             }
@@ -63,9 +44,9 @@ public class ControllerManager : MonoBehaviour
     {
         bool check = false;
 
-        if (Mathf.Cos(67.5f) >= normLeftStickHorizontal && normLeftStickHorizontal > Mathf.Cos(112.5f))
+        if (-112.5f <= leftAngle && leftAngle < -67.5f)
         {
-            if (normLeftStickVertical < 0)
+            if (leftStickHorizontal != 0 || leftStickVertical != 0)
             {
                 check = true;
             }
@@ -78,9 +59,9 @@ public class ControllerManager : MonoBehaviour
     {
         bool check = false;
 
-        if (Mathf.Sin(-22.5f) <= normLeftStickVertical && normLeftStickVertical < Mathf.Sin(22.5f))
+        if (-22.5f <= leftAngle && leftAngle < 22.5f)
         {
-            if (normLeftStickHorizontal > 0)
+            if (leftStickHorizontal != 0 || leftStickVertical != 0)
             {
                 check = true;
             }
@@ -93,9 +74,9 @@ public class ControllerManager : MonoBehaviour
     {
         bool check = false;
 
-        if (Mathf.Sin(-22.5f) <= normLeftStickVertical && normLeftStickVertical < Mathf.Sin(22.5f))
+        if (leftAngle < -157.5f || leftAngle >= 157.5f)
         {
-            if (normLeftStickHorizontal < 0)
+            if (leftStickHorizontal != 0 || leftStickVertical != 0)
             {
                 check = true;
             }
@@ -108,9 +89,9 @@ public class ControllerManager : MonoBehaviour
     {
         bool check = false;
 
-        if (Mathf.Sin(22.5f) <= normLeftStickVertical && normLeftStickVertical < Mathf.Sin(67.5f))
+        if (22.5f <= leftAngle && leftAngle < 67.5f)
         {
-            if (normLeftStickHorizontal > 0)
+            if (leftStickHorizontal != 0 || leftStickVertical != 0)
             {
                 check = true;
             }
@@ -123,9 +104,9 @@ public class ControllerManager : MonoBehaviour
     {
         bool check = false;
 
-        if (Mathf.Sin(22.5f) <= normLeftStickVertical && normLeftStickVertical < Mathf.Sin(67.5f))
+        if (112.5f <= leftAngle && leftAngle < 157.5f)
         {
-            if (normLeftStickHorizontal < 0)
+            if (leftStickHorizontal != 0 || leftStickVertical != 0)
             {
                 check = true;
             }
@@ -138,9 +119,9 @@ public class ControllerManager : MonoBehaviour
     {
         bool check = false;
 
-        if (Mathf.Sin(-67.5f) <= normLeftStickVertical && normLeftStickVertical < Mathf.Sin(-22.5f))
+        if (-67.5f <= leftAngle && leftAngle < -22.5f)
         {
-            if (normLeftStickHorizontal > 0)
+            if (leftStickHorizontal != 0 || leftStickVertical != 0)
             {
                 check = true;
             }
@@ -153,9 +134,9 @@ public class ControllerManager : MonoBehaviour
     {
         bool check = false;
 
-        if (Mathf.Sin(-67.5f) <= normLeftStickVertical && normLeftStickVertical < Mathf.Sin(-22.5f))
+        if (-157.5f <= leftAngle && leftAngle < -112.5f)
         {
-            if (normLeftStickHorizontal < 0)
+            if (leftStickHorizontal != 0 || leftStickVertical != 0)
             {
                 check = true;
             }
@@ -169,9 +150,9 @@ public class ControllerManager : MonoBehaviour
     {
         bool check = false;
 
-        if (Mathf.Cos(67.5f) <= normRightStickHorizontal && normRightStickHorizontal < Mathf.Cos(112.5f))
+        if (67.5f <= rightAngle && rightAngle < 112.5f)
         {
-            if (normRightStickVertical > 0)
+            if (rightStickHorizontal != 0 || rightStickVertical != 0)
             {
                 check = true;
             }
@@ -184,9 +165,9 @@ public class ControllerManager : MonoBehaviour
     {
         bool check = false;
 
-        if (Mathf.Cos(67.5f) <= normRightStickHorizontal && normRightStickHorizontal < Mathf.Cos(112.5f))
+        if (-112.5f <= rightAngle && rightAngle < -67.5f)
         {
-            if (normRightStickVertical < 0)
+            if (rightStickHorizontal != 0 || rightStickVertical != 0)
             {
                 check = true;
             }
@@ -199,9 +180,9 @@ public class ControllerManager : MonoBehaviour
     {
         bool check = false;
 
-        if (Mathf.Sin(-22.5f) <= normRightStickVertical && normRightStickVertical < Mathf.Sin(22.5f))
+        if (-22.5f <= rightAngle && rightAngle < 22.5f)
         {
-            if (normRightStickHorizontal > 0)
+            if (rightStickHorizontal != 0 || rightStickVertical != 0)
             {
                 check = true;
             }
@@ -214,9 +195,9 @@ public class ControllerManager : MonoBehaviour
     {
         bool check = false;
 
-        if (Mathf.Sin(-22.5f) <= normRightStickVertical && normRightStickVertical < Mathf.Sin(22.5f))
+        if (rightAngle < -157.5f || rightAngle >= 157.5f)
         {
-            if (normRightStickHorizontal < 0)
+            if (rightStickHorizontal != 0 || rightStickVertical != 0)
             {
                 check = true;
             }
@@ -229,9 +210,9 @@ public class ControllerManager : MonoBehaviour
     {
         bool check = false;
 
-        if (Mathf.Sin(22.5f) <= normRightStickVertical && normRightStickVertical < Mathf.Sin(67.5f))
+        if (22.5f <= rightAngle && rightAngle < 67.5f)
         {
-            if (normRightStickHorizontal > 0)
+            if (rightStickHorizontal != 0 || rightStickVertical != 0)
             {
                 check = true;
             }
@@ -244,9 +225,9 @@ public class ControllerManager : MonoBehaviour
     {
         bool check = false;
 
-        if (Mathf.Sin(22.5f) <= normRightStickVertical && normRightStickVertical < Mathf.Sin(67.5f))
+        if (112.5f <= rightAngle && rightAngle < 157.5f)
         {
-            if (normRightStickHorizontal < 0)
+            if (rightStickHorizontal != 0 || rightStickVertical != 0)
             {
                 check = true;
             }
@@ -259,9 +240,9 @@ public class ControllerManager : MonoBehaviour
     {
         bool check = false;
 
-        if (Mathf.Sin(-67.5f) <= normRightStickVertical && normRightStickVertical < Mathf.Sin(-22.5f))
+        if (-67.5f <= rightAngle && rightAngle < -22.5f)
         {
-            if (normRightStickHorizontal > 0)
+            if (rightStickHorizontal != 0 || rightStickVertical != 0)
             {
                 check = true;
             }
@@ -274,9 +255,9 @@ public class ControllerManager : MonoBehaviour
     {
         bool check = false;
 
-        if (Mathf.Sin(-67.5f) <= normRightStickVertical && normRightStickVertical < Mathf.Sin(-22.5f))
+        if (-157.5f <= rightAngle && rightAngle < -112.5f)
         {
-            if (normRightStickHorizontal < 0)
+            if (rightStickHorizontal != 0 || rightStickVertical != 0)
             {
                 check = true;
             }
@@ -285,13 +266,8 @@ public class ControllerManager : MonoBehaviour
         return check;
     }
 
-    public float GetNormLeftStickHorizontal()
+    public float GetLeftAngle()
     {
-        return normLeftStickHorizontal;
-    }
-
-    public float GetNormLeftStickVertical()
-    {
-        return normLeftStickVertical;
+        return leftAngle;
     }
 }

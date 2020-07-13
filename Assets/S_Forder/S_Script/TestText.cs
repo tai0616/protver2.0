@@ -9,7 +9,7 @@ public class TestText : MonoBehaviour
     [SerializeField] private ControllerManager cm;
 
     public Text text; // Textオブジェクト
-    public Text Horizontal, Vertical;
+    public Text angle;
 
     // 初期化
     void Start()
@@ -23,8 +23,7 @@ public class TestText : MonoBehaviour
 
         cm.Update();
 
-        float hori = cm.GetNormLeftStickHorizontal();
-        float ver = cm.GetNormLeftStickVertical();
+        float atan = cm.GetLeftAngle();
 
         if (cm.LeftStickUp())
         {
@@ -59,7 +58,40 @@ public class TestText : MonoBehaviour
             text.text = "左スティック：左下";
         }
 
-        Horizontal.text = "Horizontal:" + hori.ToString();
-        Vertical.text = "Vertical:" + ver.ToString();
+
+        if (cm.RightStickUp())
+        {
+            text.text = "右スティック：上";
+        }
+        if (cm.RightStickDown())
+        {
+            text.text = "右スティック：下";
+        }
+        if (cm.RightStickRight())
+        {
+            text.text = "右スティック：右";
+        }
+        if (cm.RightStickLeft())
+        {
+            text.text = "右スティック：左";
+        }
+        if (cm.RightStickRightUp())
+        {
+            text.text = "右スティック：右上";
+        }
+        if (cm.RightStickRightDown())
+        {
+            text.text = "右スティック：右下";
+        }
+        if (cm.RightStickLeftUp())
+        {
+            text.text = "右スティック：左上";
+        }
+        if (cm.RightStickLeftDown())
+        {
+            text.text = "右スティック：左下";
+        }
+
+        angle.text = "atan2:" + atan.ToString();
     }
 }
