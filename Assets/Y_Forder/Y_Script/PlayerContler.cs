@@ -6,6 +6,7 @@ public class PlayerContler : MonoBehaviour
 {
     Rigidbody rb;
 
+    [SerializeField] private ControllerManager cm;
 
     public GameObject monster;
     public GameObject monsterTop;
@@ -13,6 +14,7 @@ public class PlayerContler : MonoBehaviour
 
 
     public float maxDistance;
+    Vector3 oldPos;
 
     public float moveSpeed;              // 移動速度
     public float moveForceMultiplier;    // 移動速度の入力に対する追従度
@@ -32,18 +34,26 @@ public class PlayerContler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        oldPos = transform.position;
         if (!moveDistance)
         {
-            horizontalInput = Input.GetAxis("Horizontal");
-            verticalInput = Input.GetAxis("Vertical");
+            horizontalInput = Input.GetAxis("LeftStickHorizontal");
+            verticalInput = Input.GetAxis("LeftStickVertical");
 
-            if (Input.GetKey(KeyCode.Q))
+            bool inputKey_ = false;
+            if (Input.GetButton("L1"))
             {
                 heightInput = -0.5f;
+                inputKey_ = true;
             }
-            if (Input.GetKey(KeyCode.E))
+            if (Input.GetButton("R1"))
             {
                 heightInput = 0.5f;
+                inputKey_ = true;
+            }
+            if (!inputKey_)
+            {
+                heightInput = 0f;
             }
         }
 
@@ -57,6 +67,7 @@ public class PlayerContler : MonoBehaviour
         {
             if (!moveDistance)
             {
+                horizontalInput = verticalInput = 0;
                 Pointtarget(nearPoint);
             }
         }
@@ -90,6 +101,7 @@ public class PlayerContler : MonoBehaviour
     {
         Vector3 moveVec = nearP_ - transform.position;
 
+       
         Vector3 NewPos = monster.transform.position + moveVec;
         NewPos.y = monster.transform.position.y;
         if (moveVec.x > 0)
@@ -100,9 +112,30 @@ public class PlayerContler : MonoBehaviour
         {
             NewPos.x = monster.transform.position.x - 8.0f;
         }
-        //transform.position = NewPos;
+   
 
-        StartThrow(this.gameObject, -15.0f, transform.position, NewPos, 60.0f);
+        if (cm.LeftStickRightUp())
+        {
+            StartThrow(this.gameObject, 18.0f, transform.position, NewPos, 60.0f);
+        }
+        else if (cm.LeftStickRightDown())
+        {
+            StartThrow(this.gameObject, -18.0f, transform.position, NewPos, 60.0f);
+        }
+        else if (cm.LeftStickLeftUp())
+        {
+            StartThrow(this.gameObject, 18.0f, transform.position, NewPos, 60.0f);
+        }
+        else if (cm.LeftStickLeftDown())
+        {
+            StartThrow(this.gameObject, -18.0f, transform.position, NewPos, 60.0f);
+        }
+        else
+        {
+           
+        }
+
+       
     }
 
     void StartThrow(GameObject target, float height, Vector3 start, Vector3 end, float duration)
@@ -138,4 +171,5 @@ public class PlayerContler : MonoBehaviour
         var b = Vector3.Lerp(p1, p2, t);
         return Vector3.Lerp(a, b, t);
     }
+
 }
