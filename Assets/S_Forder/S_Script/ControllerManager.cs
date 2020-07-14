@@ -270,4 +270,8 @@ public class ControllerManager : MonoBehaviour
     {
         return leftAngle;
     }
+    public float GetRightAngle()
+    {
+        return rightAngle;
+    }
 }
