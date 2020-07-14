@@ -27,6 +27,56 @@ public class TestText : MonoBehaviour
         float left = cm.GetLeftAngle();
         float right = cm.GetRightAngle();
 
+        if(Input.GetButton("Maru"))
+        {
+            text.text = "Maru";
+        }
+        if (Input.GetButton("Batu"))
+        {
+            text.text = "Batu";
+        }
+        if (Input.GetButton("Sankaku"))
+        {
+            text.text = "Sankaku";
+        }
+        if (Input.GetButton("Sikaku"))
+        {
+            text.text = "Sikaku";
+        }
+        if (Input.GetButton("L1"))
+        {
+            text.text = "L1";
+        }
+        if (Input.GetButton("L2"))
+        {
+            text.text = "L2";
+        }
+        if (Input.GetButton("R1"))
+        {
+            text.text = "R1";
+        }
+        if (Input.GetButton("R2"))
+        {
+            text.text = "R2";
+        }
+        if (Input.GetButton("Share"))
+        {
+            text.text = "Share";
+        }
+        if (Input.GetButton("Option"))
+        {
+            text.text = "Option";
+        }
+        if (Input.GetButton("PS"))
+        {
+            text.text = "PS";
+        }
+        if (Input.GetButton("TrackPad"))
+        {
+            text.text = "TrackPad";
+        }
+
+
         if (cm.LeftStickUp())
         {
             text.text = "左スティック：上";
