@@ -9,7 +9,8 @@ public class TestText : MonoBehaviour
     [SerializeField] private ControllerManager cm;
 
     public Text text; // Textオブジェクト
-    public Text angle;
+    public Text leftAngle;
+    public Text rightAngle;
 
     // 初期化
     void Start()
@@ -23,7 +24,8 @@ public class TestText : MonoBehaviour
 
         cm.Update();
 
-        float atan = cm.GetLeftAngle();
+        float left = cm.GetLeftAngle();
+        float right = cm.GetRightAngle();
 
         if (cm.LeftStickUp())
         {
@@ -92,6 +94,7 @@ public class TestText : MonoBehaviour
             text.text = "右スティック：左下";
         }
 
-        angle.text = "atan2:" + atan.ToString();
+        leftAngle.text = "LeftAngle:" + left.ToString();
+        rightAngle.text = "RightAngle:" + right.ToString();
     }
 }
