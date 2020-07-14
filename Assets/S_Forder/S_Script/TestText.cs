@@ -51,6 +51,10 @@ public class TestText : MonoBehaviour
         {
             text.text = "L2";
         }
+        if (Input.GetButton("L3"))
+        {
+            text.text = "L3";
+        }
         if (Input.GetButton("R1"))
         {
             text.text = "R1";
@@ -58,6 +62,10 @@ public class TestText : MonoBehaviour
         if (Input.GetButton("R2"))
         {
             text.text = "R2";
+        }
+        if (Input.GetButton("R3"))
+        {
+            text.text = "R3";
         }
         if (Input.GetButton("Share"))
         {
