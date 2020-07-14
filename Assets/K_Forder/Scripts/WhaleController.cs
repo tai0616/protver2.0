@@ -4,36 +4,45 @@ using UnityEngine;
 
 public class WhaleController : MonoBehaviour
 {
-    public Transform catslePos;
+    public float HP;
+    public float STM;
+
+    [SerializeField] private Transform catslePos;
     /// <summary>
     /// レイの当たり判定
     /// </summary>
     Ray ray;
     RaycastHit hit;            //Rayが当たったオブジェクトの情報を入れる箱
-    public float ray_distance;
-    public Transform ray_startpos;
+    [SerializeField] private float ray_distance;
+    [SerializeField] private Transform ray_startpos;
 
 
     /// <summary>
     /// 巨獣の動くスピード関連
     /// </summary>
     Rigidbody KyojyuuRb;
-    public float frontSpeed = 1;
-    public float sideSpeed = 1;
+    [SerializeField] private float frontSpeed = 1;
+    [SerializeField] private float sidePower = 1;
     [SerializeField] private bool movenow = false;
 
-    private float hogetime;
-    private int rlRandom = 0;
+    private float hogetime;//避ける時の時間計算に必要
+    private int rlRandom = 0;//岩山を避ける時にどっちに避けるか
     public float sMoveTime;//横に移動する秒数
+
+    public float wPattern = 1;//体のフックのパターン
+
+    //巨獣の抵抗
+    private float resisTime;
+    private bool resisNow = false;
     private void Start()
     {
         KyojyuuRb = GetComponent<Rigidbody>();
+
     }
 
     private void Update()
     {
-        //KyojyuuRb.AddForce(0, 0, frontSpeed);
-
+        //巨獣の移動
         this.transform.LookAt(catslePos);
         float step = frontSpeed * Time.deltaTime;
         transform.position = Vector3.MoveTowards(transform.position, catslePos.position, step);
@@ -66,7 +75,7 @@ public class WhaleController : MonoBehaviour
             //巨獣の動き
             if (rlRandom == 0)//右に移動
             {
-                KyojyuuRb.AddForce(sideSpeed, 0, 0);
+                KyojyuuRb.AddForce(sidePower, 0, 0);
 
                 if (hogetime >= sMoveTime)//移動終わったら
                 {
@@ -77,7 +86,7 @@ public class WhaleController : MonoBehaviour
             }
             else//左に移動
             {
-                KyojyuuRb.AddForce(-sideSpeed, 0, 0);
+                KyojyuuRb.AddForce(-sidePower, 0, 0);
 
                 if (hogetime >= sMoveTime)//移動終わったら
                 {
@@ -87,13 +96,54 @@ public class WhaleController : MonoBehaviour
             }
         }
 
+
+        //if (KenjakuMode == true)
+        //{
+        //    resisTime += Time.deltaTime;
+
+        //    if (resisTime >= 5 && resisNow == false)//抵抗中
+        //    {
+        //        resisNow = true;
+
+        //        if (resisTime >= 10)//抵抗終わり
+        //        {
+        //            resisNow = false;
+        //        }
+        //    }
+
+
+        //    if (PullMode == true && resisNow == false)
+        //    {
+        //        STM -= 0.3f;
+        //    }
+        //}
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "MountainRock")
+        if (collision.gameObject.tag == "RockMountain")
         {
-            //Destroy(this.gameObject);
+            if (wPattern == 1)
+            {
+                transform.Find("HookP2").gameObject.SetActive(true);
+                transform.Find("HookP1").gameObject.SetActive(false);
+                Destroy(collision.gameObject);
+                wPattern++;
+            }
+            else if (wPattern == 2)
+            {
+                transform.Find("HookP3").gameObject.SetActive(true);
+                transform.Find("HookP2").gameObject.SetActive(false);
+                Destroy(collision.gameObject);
+                wPattern++;
+            }
+            else if (wPattern == 3)
+            {
+                transform.Find("HookP1").gameObject.SetActive(true);
+                transform.Find("HookP3").gameObject.SetActive(false);
+                Destroy(collision.gameObject);
+                wPattern = 1;
+            }
         }
     }
 }
