@@ -5,8 +5,10 @@ using UnityEngine;
 public class PlayerContler : MonoBehaviour
 {
     Rigidbody rb;
+    Rigidbody monsterrb;
 
     [SerializeField] private ControllerManager cm;
+    [SerializeField] private float dashSpeed;
 
     public GameObject monster;
     public GameObject monsterTop;
@@ -25,10 +27,18 @@ public class PlayerContler : MonoBehaviour
 
     bool moveDistance = false;
 
+    public enum MOVE
+    {
+        SerchMode,
+        KenjakuMode,
+        PullMode,
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        monsterrb = monster.GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -40,15 +50,20 @@ public class PlayerContler : MonoBehaviour
             horizontalInput = Input.GetAxis("LeftStickHorizontal");
             verticalInput = Input.GetAxis("LeftStickVertical");
 
+            if (Input.GetButton("Maru"))
+            {
+                horizontalInput *= dashSpeed;
+                verticalInput *= dashSpeed;
+            }
             bool inputKey_ = false;
             if (Input.GetButton("L1"))
             {
-                heightInput = -0.5f;
+                heightInput = -1.5f;
                 inputKey_ = true;
             }
             if (Input.GetButton("R1"))
             {
-                heightInput = 0.5f;
+                heightInput = 1.5f;
                 inputKey_ = true;
             }
             if (!inputKey_)
@@ -82,7 +97,9 @@ public class PlayerContler : MonoBehaviour
         moveVector.x = moveSpeed * horizontalInput;
         moveVector.y = moveSpeed * heightInput;
         moveVector.z = moveSpeed * verticalInput;
+        
         rb.AddForce(moveForceMultiplier * (moveVector - rb.velocity));
+        
     }
 
     // 点Pから最も近い線分AB上にある点を返す
@@ -104,35 +121,35 @@ public class PlayerContler : MonoBehaviour
        
         Vector3 NewPos = monster.transform.position + moveVec;
         NewPos.y = monster.transform.position.y;
+    
         if (moveVec.x > 0)
         {
-            NewPos.x = monster.transform.position.x + 8.0f;
+            NewPos.x = monster.transform.position.x + maxDistance + 2.0f;
         }
         else
         {
-            NewPos.x = monster.transform.position.x - 8.0f;
+            NewPos.x = monster.transform.position.x - maxDistance - 2.0f;
         }
-   
+
+        NewPos.z = monster.transform.position.z;
+
+     
 
         if (cm.LeftStickRightUp())
         {
-            StartThrow(this.gameObject, 18.0f, transform.position, NewPos, 60.0f);
+            StartThrow(this.gameObject, 18.0f, this.transform.position, NewPos, 50.0f);
         }
         else if (cm.LeftStickRightDown())
         {
-            StartThrow(this.gameObject, -18.0f, transform.position, NewPos, 60.0f);
+            StartThrow(this.gameObject, -18.0f, this.transform.position, NewPos, 50.0f);
         }
         else if (cm.LeftStickLeftUp())
         {
-            StartThrow(this.gameObject, 18.0f, transform.position, NewPos, 60.0f);
+            StartThrow(this.gameObject, 18.0f, this.transform.position, NewPos, 50.0f);
         }
         else if (cm.LeftStickLeftDown())
         {
-            StartThrow(this.gameObject, -18.0f, transform.position, NewPos, 60.0f);
-        }
-        else
-        {
-           
+            StartThrow(this.gameObject, -18.0f, this.transform.position, NewPos, 50.0f);
         }
 
        
@@ -169,7 +186,9 @@ public class PlayerContler : MonoBehaviour
         moveDistance = true;
         var a = Vector3.Lerp(p0, p1, t);
         var b = Vector3.Lerp(p1, p2, t);
-        return Vector3.Lerp(a, b, t);
+        Vector3 kaesu_= Vector3.Lerp(a, b, t);
+        kaesu_.z = transform.position.z;
+        return kaesu_;
     }
 
 }

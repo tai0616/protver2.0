@@ -11,6 +11,9 @@ public class CursorShot : MonoBehaviour
     private GameObject kenjyaku;
 
     [SerializeField]
+    private Camera camera;
+
+    [SerializeField]
     private GameObject Target;
 
 
@@ -21,12 +24,14 @@ public class CursorShot : MonoBehaviour
     {
         //　カーソルを自前のカーソルに変更
         Cursor.SetCursor(cursor, new Vector2(cursor.width / 2.0f, cursor.height / 2.0f), CursorMode.ForceSoftware);
+        //カーソルをウィンドウ内に
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Update()
     {
         //　マウスの左クリックで撃つ
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("R2"))
         {
             Shot();
         }
@@ -74,7 +79,10 @@ public class CursorShot : MonoBehaviour
     //　敵を撃つ
     void Shot()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        //Ray ray = Camera.main.ScreenPointToRay();
+
+        Ray ray = new Ray(camera.transform.position, camera.transform.forward);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit, 100f, LayerMask.GetMask("Enemy")))
