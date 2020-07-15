@@ -44,8 +44,10 @@ public class WhaleController : MonoBehaviour
     {
         //巨獣の移動
         this.transform.LookAt(catslePos);
-        float step = frontSpeed * Time.deltaTime;
-        transform.position = Vector3.MoveTowards(transform.position, catslePos.position, step);
+        KyojyuuRb.velocity = (catslePos.position.normalized - transform.position.normalized) * frontSpeed;
+
+        //float step = frontSpeed * Time.deltaTime;
+        //transform.position = Vector3.MoveTowards(transform.position, catslePos.position, step);
 
         ///////////////レイで岩山を判断///////////////
         ray = new Ray(ray_startpos.transform.position, transform.TransformDirection(new Vector3(0, 0, ray_distance)));
@@ -75,7 +77,8 @@ public class WhaleController : MonoBehaviour
             //巨獣の動き
             if (rlRandom == 0)//右に移動
             {
-                KyojyuuRb.AddForce(sidePower, 0, 0);
+                //KyojyuuRb.AddForce(sidePower, 0, 0);
+                KyojyuuRb.AddForce(sidePower, 0, 0, ForceMode.Impulse);
 
                 if (hogetime >= sMoveTime)//移動終わったら
                 {
@@ -86,7 +89,8 @@ public class WhaleController : MonoBehaviour
             }
             else//左に移動
             {
-                KyojyuuRb.AddForce(-sidePower, 0, 0);
+                //KyojyuuRb.AddForce(-sidePower, 0, 0);
+                KyojyuuRb.AddForce(sidePower, 0, 0, ForceMode.Impulse);
 
                 if (hogetime >= sMoveTime)//移動終わったら
                 {

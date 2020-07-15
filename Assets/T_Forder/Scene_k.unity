@@ -721,9 +721,9 @@ MonoBehaviour:
   ray_distance: 100
   ray_startpos: {fileID: 1046447020}
   frontSpeed: 10
-  sidePower: 250
+  sidePower: 2200
   movenow: 0
-  sMoveTime: 20
+  sMoveTime: 15
   wPattern: 1
 --- !u!54 &822198833
 Rigidbody:
