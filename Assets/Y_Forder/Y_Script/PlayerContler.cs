@@ -42,6 +42,8 @@ public class PlayerContler : MonoBehaviour
     }
 
     // Update is called once per frame
+
+  
     void Update()
     {
         oldPos = transform.position;
@@ -107,7 +109,7 @@ public class PlayerContler : MonoBehaviour
         Vector3 moveForward = cameraForward * verticalInput + Camera.main.transform.right * horizontalInput;
 
         // 移動方向にスピードを掛ける。ジャンプや落下がある場合は、別途Y軸方向の速度ベクトルを足す。
-        rb.velocity = moveForward * moveSpeed + new Vector3(0, heightInput * moveSpeed, 0);
+        rb.AddForce(moveForward * moveSpeed + new Vector3(0, heightInput * moveSpeed, 0));
 
 
         // キャラクターの向きを進行方向に
@@ -115,6 +117,7 @@ public class PlayerContler : MonoBehaviour
         {
             transform.rotation = Quaternion.LookRotation(moveForward);
         }
+        rb.velocity *= 0.95f;
     }
 
     // 点Pから最も近い線分AB上にある点を返す
