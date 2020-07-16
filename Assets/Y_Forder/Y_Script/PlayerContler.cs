@@ -27,7 +27,7 @@ public class PlayerContler : MonoBehaviour
 
     bool moveDistance = false;
 
-    public enum MOVE
+    public enum MODE
     {
         SerchMode,
         KenjakuMode,
@@ -94,12 +94,27 @@ public class PlayerContler : MonoBehaviour
     {
         Vector3 moveVector = Vector3.zero;    // 移動速度の入力
 
-        moveVector.x = moveSpeed * horizontalInput;
-        moveVector.y = moveSpeed * heightInput;
-        moveVector.z = moveSpeed * verticalInput;
+        //moveVector.x = moveSpeed * horizontalInput;
+        //moveVector.y = moveSpeed * heightInput;
+        //moveVector.z = moveSpeed * verticalInput;
         
-        rb.AddForce(moveForceMultiplier * (moveVector - rb.velocity));
-        
+        //rb.AddForce(moveForceMultiplier * (moveVector - rb.velocity));
+
+        // カメラの方向から、X-Z平面の単位ベクトルを取得
+        Vector3 cameraForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
+
+        // 方向キーの入力値とカメラの向きから、移動方向を決定
+        Vector3 moveForward = cameraForward * verticalInput + Camera.main.transform.right * horizontalInput;
+
+        // 移動方向にスピードを掛ける。ジャンプや落下がある場合は、別途Y軸方向の速度ベクトルを足す。
+        rb.velocity = moveForward * moveSpeed + new Vector3(0, heightInput * moveSpeed, 0);
+
+
+        // キャラクターの向きを進行方向に
+        if (moveForward != Vector3.zero)
+        {
+            transform.rotation = Quaternion.LookRotation(moveForward);
+        }
     }
 
     // 点Pから最も近い線分AB上にある点を返す
