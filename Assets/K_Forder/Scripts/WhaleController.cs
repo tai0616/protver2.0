@@ -44,7 +44,10 @@ public class WhaleController : MonoBehaviour
     {
         //巨獣の移動
         this.transform.LookAt(catslePos);
-        KyojyuuRb.velocity = (catslePos.position.normalized - transform.position.normalized) * frontSpeed;
+        Vector3 addvector = (catslePos.position.normalized - transform.position.normalized) * frontSpeed;
+        //KyojyuuRb.velocity = (catslePos.position.normalized - transform.position.normalized) * frontSpeed;
+        KyojyuuRb.AddForce(addvector);
+
 
         //float step = frontSpeed * Time.deltaTime;
         //transform.position = Vector3.MoveTowards(transform.position, catslePos.position, step);

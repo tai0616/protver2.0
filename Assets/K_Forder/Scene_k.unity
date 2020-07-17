@@ -720,7 +720,7 @@ MonoBehaviour:
   catslePos: {fileID: 2007465960}
   ray_distance: 100
   ray_startpos: {fileID: 1046447020}
-  frontSpeed: 10
+  frontSpeed: 1000
   sidePower: 2200
   movenow: 0
   sMoveTime: 15
