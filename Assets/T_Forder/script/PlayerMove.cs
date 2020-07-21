@@ -61,7 +61,7 @@ public class PlayerMove : MonoBehaviour
             
             transform.Rotate(Vector3.up * Time.deltaTime * rotSpeed);
         }
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.E))
         {
             //transform.position += Vector3.up * Time.deltaTime * speed;
             //transform.position += camTrans.up * Time.deltaTime * speed;
@@ -72,6 +72,7 @@ public class PlayerMove : MonoBehaviour
             //transform.position -= Vector3.up * Time.deltaTime * speed;
             //transform.position -= camTrans.up * Time.deltaTime * speed;
         }
+
 
         
 
