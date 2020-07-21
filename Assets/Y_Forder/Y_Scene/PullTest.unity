@@ -1449,7 +1449,7 @@ MonoBehaviour:
   monster: {fileID: 1315986412}
   monsterTop: {fileID: 760514350}
   monsterDown: {fileID: 673942770}
-  maxDistance: 8
+  maxDistance: 15
   moveSpeed: 30
   moveForceMultiplier: 20
 --- !u!54 &966066214
@@ -2171,7 +2171,7 @@ MonoBehaviour:
   ray_startpos: {fileID: 1364595383}
   frontSpeed: 10
   sidePower: 250
-  movenow: 0
+  movenow: 1
   sMoveTime: 20
   wPattern: 1
 --- !u!54 &1315986416

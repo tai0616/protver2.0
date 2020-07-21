@@ -117,7 +117,7 @@ public class PlayerContler : MonoBehaviour
         {
             transform.rotation = Quaternion.LookRotation(moveForward);
         }
-        rb.velocity *= 0.95f;
+        rb.velocity *= 0.92f;
     }
 
     // 点Pから最も近い線分AB上にある点を返す
