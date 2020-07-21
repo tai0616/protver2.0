@@ -497,7 +497,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetPoint: {fileID: 868016064}
-  speed: 0.1
+  speed: 0.01
 --- !u!1 &743003997
 GameObject:
   m_ObjectHideFlags: 0
