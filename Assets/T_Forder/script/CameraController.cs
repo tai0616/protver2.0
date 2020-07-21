@@ -2,10 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//**********************************************************
+//メモ：Cameraコンポーネントがついているオブジェクトにつけて下さい
+//**********************************************************
+
 public class CameraController : MonoBehaviour
 {
     public GameObject targetPoint;  //目標オブジェクト
-    public float speed = 0.1f;      //補間スピード
+    public float speed = 0.01f;      //補間スピード
+
+    private Vector3 eyePos;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -16,10 +24,9 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //**********************************************************
+        //==================================================
         //ターゲット方向へ向く
-        //**********************************************************
-
+        //==================================================
         // ターゲット方向のベクトルを取得
         Vector3 targetPosition = targetPoint.transform.position - this.transform.position;
         // 方向を、回転情報に変換
@@ -27,6 +34,23 @@ public class CameraController : MonoBehaviour
         // 現在の回転情報と、ターゲット方向の回転情報を補完する
         transform.rotation = Quaternion.Slerp(this.transform.rotation, targetRotation, speed);
 
+        //==================================================
+        //カメラの位置を設定
+        //==================================================
+        transform.position = Vector3.Lerp(this.transform.position, eyePos,0.01f);
 
+    }
+
+    
+
+    public void SetEyePosition(Vector3 _eyePos)
+    {
+        //距離を
+        Vector3 work = _eyePos - eyePos;
+        float distance=work.magnitude;
+
+
+
+        eyePos = _eyePos;
     }
 }
