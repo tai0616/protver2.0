@@ -16,7 +16,8 @@ public class PlayerContler : MonoBehaviour
 
 
     public float maxDistance;
-    Vector3 oldPos;
+    Vector3 monsterOldPos;
+    Vector3 monsterPos;
 
     public float moveSpeed;              // 移動速度
     public float moveForceMultiplier;    // 移動速度の入力に対する追従度
@@ -39,6 +40,8 @@ public class PlayerContler : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         monsterrb = monster.GetComponent<Rigidbody>();
+
+        monsterOldPos = monster.transform.position;
     }
 
     // Update is called once per frame
@@ -46,7 +49,6 @@ public class PlayerContler : MonoBehaviour
   
     void Update()
     {
-        oldPos = transform.position;
         if (!moveDistance)
         {
             horizontalInput = Input.GetAxis("LeftStickHorizontal");
@@ -94,30 +96,39 @@ public class PlayerContler : MonoBehaviour
 
     void FixedUpdate()
     {
+        monsterPos = monster.transform.position;
+
+
         Vector3 moveVector = Vector3.zero;    // 移動速度の入力
 
-        //moveVector.x = moveSpeed * horizontalInput;
-        //moveVector.y = moveSpeed * heightInput;
-        //moveVector.z = moveSpeed * verticalInput;
+        moveVector.x = moveSpeed * horizontalInput;
+        moveVector.y = moveSpeed * heightInput;
+        moveVector.z = moveSpeed * verticalInput;
         
-        //rb.AddForce(moveForceMultiplier * (moveVector - rb.velocity));
+        rb.AddForce(moveForceMultiplier * (moveVector - rb.velocity));
 
-        // カメラの方向から、X-Z平面の単位ベクトルを取得
-        Vector3 cameraForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
+        //// カメラの方向から、X-Z平面の単位ベクトルを取得
+        //Vector3 cameraForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
 
-        // 方向キーの入力値とカメラの向きから、移動方向を決定
-        Vector3 moveForward = cameraForward * verticalInput + Camera.main.transform.right * horizontalInput;
+        //// 方向キーの入力値とカメラの向きから、移動方向を決定
+        //Vector3 moveForward = cameraForward * verticalInput + Camera.main.transform.right * horizontalInput;
 
-        // 移動方向にスピードを掛ける。ジャンプや落下がある場合は、別途Y軸方向の速度ベクトルを足す。
-        rb.AddForce(moveForward * moveSpeed + new Vector3(0, heightInput * moveSpeed, 0));
+        //// 移動方向にスピードを掛ける。ジャンプや落下がある場合は、別途Y軸方向の速度ベクトルを足す。
+        //rb.AddForce(moveForward * moveSpeed + new Vector3(0, heightInput * moveSpeed, 0));
 
 
-        // キャラクターの向きを進行方向に
-        if (moveForward != Vector3.zero)
-        {
-            transform.rotation = Quaternion.LookRotation(moveForward);
-        }
-        rb.velocity *= 0.92f;
+        //// キャラクターの向きを進行方向に
+        //if (moveForward != Vector3.zero)
+        //{
+        //    transform.rotation = Quaternion.LookRotation(moveForward);
+        //}
+        //rb.velocity *= 0.92f;
+
+        Vector3 AddPos_ = monsterPos - monsterOldPos;
+
+        transform.position += AddPos_;
+
+        monsterOldPos = monster.transform.position;
     }
 
     // 点Pから最も近い線分AB上にある点を返す
