@@ -85,6 +85,7 @@ public class WhaleController : MonoBehaviour
 
                 if (hogetime >= sMoveTime)//移動終わったら
                 {
+                    KyojyuuRb.velocity = Vector3.zero;
                     movenow = false;
                 }
 
@@ -97,6 +98,7 @@ public class WhaleController : MonoBehaviour
 
                 if (hogetime >= sMoveTime)//移動終わったら
                 {
+                    KyojyuuRb.velocity = Vector3.zero;
                     movenow = false;
                 }
                 Debug.Log(hogetime);

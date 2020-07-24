@@ -8,7 +8,7 @@ public class TargetPointController : MonoBehaviour
     public GameObject player;
     public GameObject giantBeast;
 
-    private CameraController cameraController;
+    private CameraContollerScript cameraController;
 
     private float nonOperationTimer = 0.0f;
     private bool autoCameraFlag = false;
@@ -17,7 +17,7 @@ public class TargetPointController : MonoBehaviour
     void Start()
     {
         //カメラ操作コンポーネント取得
-        cameraController = Camera.main.GetComponent<CameraController>();
+        cameraController = Camera.main.GetComponent<CameraContollerScript>();
     }
 
     // Update is called once per frame
@@ -55,7 +55,7 @@ public class TargetPointController : MonoBehaviour
         }
 
 
-        if (Input.GetButton("Maru"))
+        if (Input.GetButton("Sikaku"))
         {
             //索敵モードカメラワーク
             //巨獣とプレイヤーの間くらいを見る
@@ -67,7 +67,9 @@ public class TargetPointController : MonoBehaviour
             transform.position = player.transform.position + player.transform.forward * 5.0f;
 
         }
-
+        //=============================--  一時的に追加=========================================================
+        transform.position = (player.transform.position + giantBeast.transform.position) / 2;
+        //=====================================================================================================
 
         //**********************************************************
         //カメラの目線設定(eyeを設定)

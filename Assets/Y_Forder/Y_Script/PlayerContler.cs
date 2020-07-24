@@ -28,6 +28,8 @@ public class PlayerContler : MonoBehaviour
 
     bool moveDistance = false;
 
+    bool lockOn = false;
+    CameraContollerScript dis_came;
     public enum MODE
     {
         SerchMode,
@@ -42,6 +44,7 @@ public class PlayerContler : MonoBehaviour
         monsterrb = monster.GetComponent<Rigidbody>();
 
         monsterOldPos = monster.transform.position;
+        dis_came = Camera.main.gameObject.GetComponent<CameraContollerScript>();
     }
 
     // Update is called once per frame
@@ -49,7 +52,12 @@ public class PlayerContler : MonoBehaviour
   
     void Update()
     {
-        if (!moveDistance)
+        if (Input.GetButtonDown("L2"))
+        {
+            //ロックオンモードに移行
+            lockOn = !lockOn;
+        }
+            if (!moveDistance)
         {
             horizontalInput = Input.GetAxis("LeftStickHorizontal");
             verticalInput = Input.GetAxis("LeftStickVertical");
@@ -82,15 +90,21 @@ public class PlayerContler : MonoBehaviour
 
 
         //近づいたら動くやつ
-        if (distance < maxDistance)
-        {
-            if (!moveDistance)
-            {
-                horizontalInput = verticalInput = 0;
-                Pointtarget(nearPoint);
-            }
-        }
+        //if (distance < maxDistance)
+        //{
+        //    if (!moveDistance)
+        //    {
+        //        //horizontalInput = verticalInput = 0;
+        //        //Pointtarget(nearPoint);
+        //    }
+        //}
 
+        if (lockOn)
+        {
+            Camera.main.transform.LookAt(monster.transform);
+            dis_came.distance = 1.5f;
+        }
+      
         moveDistance = false;
     }
 
@@ -101,28 +115,30 @@ public class PlayerContler : MonoBehaviour
 
         Vector3 moveVector = Vector3.zero;    // 移動速度の入力
 
-        moveVector.x = moveSpeed * horizontalInput;
-        moveVector.y = moveSpeed * heightInput;
-        moveVector.z = moveSpeed * verticalInput;
-        
-        rb.AddForce(moveForceMultiplier * (moveVector - rb.velocity));
+        //moveVector.x = moveSpeed * horizontalInput;
+        //moveVector.y = moveSpeed * heightInput;
+        //moveVector.z = moveSpeed * verticalInput;
 
-        //// カメラの方向から、X-Z平面の単位ベクトルを取得
-        //Vector3 cameraForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
+        //rb.AddForce(moveForceMultiplier * (moveVector - rb.velocity));
 
-        //// 方向キーの入力値とカメラの向きから、移動方向を決定
-        //Vector3 moveForward = cameraForward * verticalInput + Camera.main.transform.right * horizontalInput;
+        // カメラの方向から、X-Z平面の単位ベクトルを取得
+        Vector3 cameraForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
 
-        //// 移動方向にスピードを掛ける。ジャンプや落下がある場合は、別途Y軸方向の速度ベクトルを足す。
-        //rb.AddForce(moveForward * moveSpeed + new Vector3(0, heightInput * moveSpeed, 0));
+        // 方向キーの入力値とカメラの向きから、移動方向を決定
+        Vector3 moveForward = cameraForward * verticalInput + Camera.main.transform.right * horizontalInput;
+
+        // 移動方向にスピードを掛ける。ジャンプや落下がある場合は、別途Y軸方向の速度ベクトルを足す。
+        rb.AddForce(moveForward * moveSpeed + new Vector3(0, heightInput * moveSpeed, 0));
 
 
-        //// キャラクターの向きを進行方向に
-        //if (moveForward != Vector3.zero)
-        //{
-        //    transform.rotation = Quaternion.LookRotation(moveForward);
-        //}
-        //rb.velocity *= 0.92f;
+        // キャラクターの向きを進行方向に
+        if (moveForward != Vector3.zero)
+        {
+            transform.rotation = Quaternion.LookRotation(moveForward);
+            
+        }
+      
+        rb.velocity *= 0.92f;
 
         Vector3 AddPos_ = monsterPos - monsterOldPos;
 
